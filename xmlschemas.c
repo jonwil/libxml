@@ -4616,7 +4616,7 @@ exit:
  * @param nsName  the type's namespace
  * @returns the group definition or NULL if not found.
  */
-static xmlSchemaTypePtr
+xmlSchemaTypePtr
 xmlSchemaGetType(xmlSchemaPtr schema, const xmlChar * name,
                  const xmlChar * nsName)
 {
@@ -7136,23 +7136,23 @@ check_children:
 	/*
 	* Check for pointlessness of attribute prohibitions.
 	*/
-	if (parentType == XML_SCHEMA_TYPE_ATTRIBUTEGROUP) {
-	    xmlSchemaCustomWarning(ACTXT_CAST pctxt,
-		XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH,
-		node, NULL,
-		"Skipping attribute use prohibition, since it is "
-		"pointless inside an <attributeGroup>",
-		NULL, NULL, NULL);
-	    return(NULL);
-	} else if (parentType == XML_SCHEMA_TYPE_EXTENSION) {
-	    xmlSchemaCustomWarning(ACTXT_CAST pctxt,
-		XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH,
-		node, NULL,
-		"Skipping attribute use prohibition, since it is "
-		"pointless when extending a type",
-		NULL, NULL, NULL);
-	    return(NULL);
-	}
+	//if (parentType == XML_SCHEMA_TYPE_ATTRIBUTEGROUP) {
+	//    xmlSchemaCustomWarning(ACTXT_CAST pctxt,
+	//	XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH,
+	//	node, NULL,
+	//	"Skipping attribute use prohibition, since it is "
+	//	"pointless inside an <attributeGroup>",
+	//	NULL, NULL, NULL);
+	//    return(NULL);
+	//} else if (parentType == XML_SCHEMA_TYPE_EXTENSION) {
+	//    xmlSchemaCustomWarning(ACTXT_CAST pctxt,
+	//	XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH,
+	//	node, NULL,
+	//	"Skipping attribute use prohibition, since it is "
+	//	"pointless when extending a type",
+	//	NULL, NULL, NULL);
+	//    return(NULL);
+	//}
 	if (! isRef) {
 	    tmpName = name;
 	    tmpNs = ns;
@@ -20356,18 +20356,18 @@ xmlSchemaAddComponents(xmlSchemaParserCtxtPtr pctxt,
 	    }
 	}
 	err = xmlHashAddEntry(*table, name, item);
-	if (err != 0) {
-	    xmlChar *str = NULL;
+	//if (err != 0) {
+	//    xmlChar *str = NULL;
 
-	    xmlSchemaCustomErr(ACTXT_CAST pctxt,
-		XML_SCHEMAP_REDEFINED_TYPE,
-		WXS_ITEM_NODE(item),
-		WXS_BASIC_CAST item,
-		"A global %s '%s' does already exist",
-		WXS_ITEM_TYPE_NAME(item),
-		xmlSchemaGetComponentQName(&str, item));
-	    FREE_AND_NULL(str);
-	}
+	//    xmlSchemaCustomErr(ACTXT_CAST pctxt,
+	//	XML_SCHEMAP_REDEFINED_TYPE,
+	//	WXS_ITEM_NODE(item),
+	//	WXS_BASIC_CAST item,
+	//	"A global %s '%s' does already exist",
+	//	WXS_ITEM_TYPE_NAME(item),
+	//	xmlSchemaGetComponentQName(&str, item));
+	//    FREE_AND_NULL(str);
+	//}
     }
     /*
     * Process imported/included schemas.
