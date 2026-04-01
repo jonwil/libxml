@@ -7136,23 +7136,23 @@ check_children:
 	/*
 	* Check for pointlessness of attribute prohibitions.
 	*/
-	//if (parentType == XML_SCHEMA_TYPE_ATTRIBUTEGROUP) {
+	if (parentType == XML_SCHEMA_TYPE_ATTRIBUTEGROUP) {
 	//    xmlSchemaCustomWarning(ACTXT_CAST pctxt,
 	//	XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH,
 	//	node, NULL,
 	//	"Skipping attribute use prohibition, since it is "
 	//	"pointless inside an <attributeGroup>",
 	//	NULL, NULL, NULL);
-	//    return(NULL);
-	//} else if (parentType == XML_SCHEMA_TYPE_EXTENSION) {
+	    return(NULL);
+	} else if (parentType == XML_SCHEMA_TYPE_EXTENSION) {
 	//    xmlSchemaCustomWarning(ACTXT_CAST pctxt,
 	//	XML_SCHEMAP_WARN_ATTR_POINTLESS_PROH,
 	//	node, NULL,
 	//	"Skipping attribute use prohibition, since it is "
 	//	"pointless when extending a type",
 	//	NULL, NULL, NULL);
-	//    return(NULL);
-	//}
+	    return(NULL);
+	}
 	if (! isRef) {
 	    tmpName = name;
 	    tmpNs = ns;
