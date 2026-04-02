@@ -797,6 +797,58 @@ struct _xmlSchema {
 XMLPUBFUN void         xmlSchemaFreeType        (xmlSchemaType *type);
 XMLPUBFUN void         xmlSchemaFreeWildcard(xmlSchemaWildcard *wildcard);
 
+/**
+ * The abstract base type for schema components.
+ */
+typedef struct _xmlSchemaBasicItem xmlSchemaBasicItem;
+typedef xmlSchemaBasicItem* xmlSchemaBasicItemPtr;
+struct _xmlSchemaBasicItem {
+    xmlSchemaTypeType type;
+    void* dummy; /* Fix alignment issues */
+};
+
+/**
+ * The abstract base type for annotated schema components.
+ * (Extends xmlSchemaBasicItem)
+ */
+typedef struct _xmlSchemaAnnotItem xmlSchemaAnnotItem;
+typedef xmlSchemaAnnotItem* xmlSchemaAnnotItemPtr;
+struct _xmlSchemaAnnotItem {
+    xmlSchemaTypeType type;
+    xmlSchemaAnnotPtr annot;
+};
+
+/**
+ * The abstract base type for tree-like structured schema components.
+ * (Extends xmlSchemaAnnotItem)
+ */
+typedef struct _xmlSchemaTreeItem xmlSchemaTreeItem;
+typedef xmlSchemaTreeItem* xmlSchemaTreeItemPtr;
+struct _xmlSchemaTreeItem {
+    xmlSchemaTypeType type;
+    xmlSchemaAnnotPtr annot;
+    xmlSchemaTreeItemPtr next;
+    xmlSchemaTreeItemPtr children;
+};
+
+/**
+ * A particle component.
+ * (Extends xmlSchemaTreeItem)
+ */
+typedef struct _xmlSchemaParticle xmlSchemaParticle;
+typedef xmlSchemaParticle* xmlSchemaParticlePtr;
+struct _xmlSchemaParticle {
+    xmlSchemaTypeType type;
+    xmlSchemaAnnotPtr annot;
+    xmlSchemaTreeItemPtr next; /* next particle */
+    xmlSchemaTreeItemPtr children; /* the "term" (e.g. a model group,
+        a group definition, a XML_SCHEMA_EXTRA_QNAMEREF (if a reference),
+        etc.) */
+    int minOccurs;
+    int maxOccurs;
+    xmlNodePtr node;
+};
+
 #ifdef __cplusplus
 }
 #endif
