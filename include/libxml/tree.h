@@ -661,6 +661,10 @@ struct _xmlRef {
 /** Generic node type in an XML or HTML tree */
 typedef struct _xmlNode xmlNode;
 typedef xmlNode *xmlNodePtr;
+
+typedef struct _xmlSchemaElement xmlSchemaElement;
+typedef xmlSchemaElement* xmlSchemaElementPtr;
+
 /**
  * Generic node type in an XML or HTML tree.
  *
@@ -753,6 +757,7 @@ struct _xmlNode {
     unsigned short   line;
     /** Extra data for XPath/XSLT */
     unsigned short   extra;
+    xmlSchemaElementPtr decl;
 };
 
 /**

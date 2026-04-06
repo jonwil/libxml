@@ -423,16 +423,6 @@ static int xmlSchemaValDecimalCompareWithInteger(const xmlSchemaValDecimal *lhs,
 */
 #define UNBOUNDED (1 << 30)
 
-typedef struct _xmlSchemaModelGroup xmlSchemaModelGroup;
-typedef xmlSchemaModelGroup *xmlSchemaModelGroupPtr;
-struct _xmlSchemaModelGroup {
-    xmlSchemaTypeType type;
-    xmlSchemaAnnotPtr annot;
-    xmlSchemaTreeItemPtr next;
-    xmlSchemaTreeItemPtr children;
-    xmlNodePtr node;
-};
-
 static xmlSchemaParticlePtr
 xmlSchemaAddParticle(void)
 {

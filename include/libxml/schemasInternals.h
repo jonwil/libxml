@@ -849,6 +849,37 @@ struct _xmlSchemaParticle {
     xmlNodePtr node;
 };
 
+/**
+ * A model group component.
+ * (Extends xmlSchemaTreeItem)
+ */
+typedef struct _xmlSchemaModelGroup xmlSchemaModelGroup;
+typedef xmlSchemaModelGroup* xmlSchemaModelGroupPtr;
+struct _xmlSchemaModelGroup {
+    xmlSchemaTypeType type; /* XML_SCHEMA_TYPE_SEQUENCE, XML_SCHEMA_TYPE_CHOICE, XML_SCHEMA_TYPE_ALL */
+    xmlSchemaAnnotPtr annot;
+    xmlSchemaTreeItemPtr next; /* not used */
+    xmlSchemaTreeItemPtr children; /* first particle (OR "element decl" OR "wildcard") */
+    xmlNodePtr node;
+};
+
+/**
+ * A model group definition component.
+ * (Extends xmlSchemaTreeItem)
+ */
+typedef struct _xmlSchemaModelGroupDef xmlSchemaModelGroupDef;
+typedef xmlSchemaModelGroupDef* xmlSchemaModelGroupDefPtr;
+struct _xmlSchemaModelGroupDef {
+    xmlSchemaTypeType type; /* XML_SCHEMA_TYPE_GROUP */
+    xmlSchemaAnnotPtr annot;
+    xmlSchemaTreeItemPtr next; /* not used */
+    xmlSchemaTreeItemPtr children; /* the "model group" */
+    const xmlChar* name;
+    const xmlChar* targetNamespace;
+    xmlNodePtr node;
+    int flags;
+};
+
 #ifdef __cplusplus
 }
 #endif

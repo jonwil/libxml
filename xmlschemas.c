@@ -611,38 +611,8 @@ struct _xmlSchemaQNameRef {
     xmlNodePtr node;
 };
 
-/**
- * A model group component.
- * (Extends xmlSchemaTreeItem)
- */
-typedef struct _xmlSchemaModelGroup xmlSchemaModelGroup;
-typedef xmlSchemaModelGroup *xmlSchemaModelGroupPtr;
-struct _xmlSchemaModelGroup {
-    xmlSchemaTypeType type; /* XML_SCHEMA_TYPE_SEQUENCE, XML_SCHEMA_TYPE_CHOICE, XML_SCHEMA_TYPE_ALL */
-    xmlSchemaAnnotPtr annot;
-    xmlSchemaTreeItemPtr next; /* not used */
-    xmlSchemaTreeItemPtr children; /* first particle (OR "element decl" OR "wildcard") */
-    xmlNodePtr node;
-};
-
 #define XML_SCHEMA_MODEL_GROUP_DEF_MARKED 1<<0
 #define XML_SCHEMA_MODEL_GROUP_DEF_REDEFINED 1<<1
-/**
- * A model group definition component.
- * (Extends xmlSchemaTreeItem)
- */
-typedef struct _xmlSchemaModelGroupDef xmlSchemaModelGroupDef;
-typedef xmlSchemaModelGroupDef *xmlSchemaModelGroupDefPtr;
-struct _xmlSchemaModelGroupDef {
-    xmlSchemaTypeType type; /* XML_SCHEMA_TYPE_GROUP */
-    xmlSchemaAnnotPtr annot;
-    xmlSchemaTreeItemPtr next; /* not used */
-    xmlSchemaTreeItemPtr children; /* the "model group" */
-    const xmlChar *name;
-    const xmlChar *targetNamespace;
-    xmlNodePtr node;
-    int flags;
-};
 
 typedef struct _xmlSchemaIDC xmlSchemaIDC;
 typedef xmlSchemaIDC *xmlSchemaIDCPtr;
@@ -25360,6 +25330,12 @@ xmlSchemaValidateElemWildcard(xmlSchemaValidCtxtPtr vctxt,
 	    vctxt->inode->localName, vctxt->inode->nsName);
 	if (decl != NULL) {
 	    vctxt->inode->decl = decl;
+            
+            if (vctxt->inode->node)
+            {
+                vctxt->inode->node->decl = vctxt->inode->decl;
+            }
+
 	    return (0);
 	}
     }
@@ -25483,6 +25459,11 @@ xmlSchemaVContentModelCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
     xmlSchemaElementPtr item = (xmlSchemaElementPtr) transdata;
     xmlSchemaNodeInfoPtr inode = (xmlSchemaNodeInfoPtr) inputdata;
     inode->decl = item;
+
+    if (inode->node)
+    {
+        inode->node->decl = inode->decl;
+    }
 }
 
 static int
@@ -26009,7 +25990,12 @@ xmlSchemaValidateChildElem(xmlSchemaValidCtxtPtr vctxt)
 	    vctxt->inode->localName,
 	    vctxt->inode->nsName);
 
-	if (vctxt->inode->decl == NULL) {
+        if (vctxt->inode->node)
+        {
+            vctxt->inode->node->decl = vctxt->inode->decl;
+        }
+        
+        if (vctxt->inode->decl == NULL) {
 	    xmlSchemaAttrInfoPtr iattr;
 	    /*
 	    * Process "xsi:type".
@@ -26373,7 +26359,13 @@ xmlSchemaValidateElem(xmlSchemaValidCtxtPtr vctxt)
 	vctxt->inode->decl = xmlSchemaGetElem(vctxt->schema,
 	    vctxt->inode->localName,
 	    vctxt->inode->nsName);
-	if (vctxt->inode->decl == NULL) {
+
+        if (vctxt->inode->node)
+        {
+            vctxt->inode->node->decl = vctxt->inode->decl;
+        }
+        
+        if (vctxt->inode->decl == NULL) {
 	    ret = XML_SCHEMAV_CVC_ELT_1;
 	    VERROR(ret, NULL,
 		"No matching global declaration available "
@@ -26412,7 +26404,13 @@ xmlSchemaValidateElem(xmlSchemaValidCtxtPtr vctxt)
 	    * Clear the "decl" field to not confuse further processing.
 	    */
 	    vctxt->inode->decl = NULL;
-	    goto type_validation;
+
+            if (vctxt->inode->node)
+            {
+                vctxt->inode->node->decl = vctxt->inode->decl;
+            }
+
+            goto type_validation;
 	}
     }
     /*

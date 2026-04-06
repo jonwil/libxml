@@ -151,9 +151,9 @@ XMLPUBFUN xmlSchemaValType
 		xmlSchemaGetValType		(xmlSchemaVal *val);
 
 XMLPUBFUN xmlSchemaTypePtr
-                xmlSchemaGetType                (xmlSchemaPtr schema,
-                                                 const xmlChar* name,
-                                                 const xmlChar* nsName);
+		xmlSchemaGetType		(xmlSchemaPtr schema,
+						 const xmlChar* name,
+						 const xmlChar* nsName);
 
 #ifdef __cplusplus
 }
