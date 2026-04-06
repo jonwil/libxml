@@ -24625,6 +24625,11 @@ xmlSchemaValidateElemDecl(xmlSchemaValidCtxtPtr vctxt)
     * Remember the actual type definition.
     */
     vctxt->inode->typeDef = actualType;
+    
+    if (vctxt->inode->node)
+    {
+        vctxt->inode->node->xmlSchemaType = actualType;
+    }
 
     return (0);
 }
@@ -25330,12 +25335,6 @@ xmlSchemaValidateElemWildcard(xmlSchemaValidCtxtPtr vctxt,
 	    vctxt->inode->localName, vctxt->inode->nsName);
 	if (decl != NULL) {
 	    vctxt->inode->decl = decl;
-            
-            if (vctxt->inode->node)
-            {
-                vctxt->inode->node->decl = vctxt->inode->decl;
-            }
-
 	    return (0);
 	}
     }
@@ -25459,11 +25458,6 @@ xmlSchemaVContentModelCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
     xmlSchemaElementPtr item = (xmlSchemaElementPtr) transdata;
     xmlSchemaNodeInfoPtr inode = (xmlSchemaNodeInfoPtr) inputdata;
     inode->decl = item;
-
-    if (inode->node)
-    {
-        inode->node->decl = inode->decl;
-    }
 }
 
 static int
@@ -25990,12 +25984,7 @@ xmlSchemaValidateChildElem(xmlSchemaValidCtxtPtr vctxt)
 	    vctxt->inode->localName,
 	    vctxt->inode->nsName);
 
-        if (vctxt->inode->node)
-        {
-            vctxt->inode->node->decl = vctxt->inode->decl;
-        }
-        
-        if (vctxt->inode->decl == NULL) {
+	if (vctxt->inode->decl == NULL) {
 	    xmlSchemaAttrInfoPtr iattr;
 	    /*
 	    * Process "xsi:type".
@@ -26359,13 +26348,7 @@ xmlSchemaValidateElem(xmlSchemaValidCtxtPtr vctxt)
 	vctxt->inode->decl = xmlSchemaGetElem(vctxt->schema,
 	    vctxt->inode->localName,
 	    vctxt->inode->nsName);
-
-        if (vctxt->inode->node)
-        {
-            vctxt->inode->node->decl = vctxt->inode->decl;
-        }
-        
-        if (vctxt->inode->decl == NULL) {
+	if (vctxt->inode->decl == NULL) {
 	    ret = XML_SCHEMAV_CVC_ELT_1;
 	    VERROR(ret, NULL,
 		"No matching global declaration available "
@@ -26404,13 +26387,7 @@ xmlSchemaValidateElem(xmlSchemaValidCtxtPtr vctxt)
 	    * Clear the "decl" field to not confuse further processing.
 	    */
 	    vctxt->inode->decl = NULL;
-
-            if (vctxt->inode->node)
-            {
-                vctxt->inode->node->decl = vctxt->inode->decl;
-            }
-
-            goto type_validation;
+	    goto type_validation;
 	}
     }
     /*
