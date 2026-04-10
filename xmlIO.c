@@ -1534,7 +1534,7 @@ xmlParserInputBufferCreateUrl(const char *URI, xmlCharEncoding enc,
             }
         } else if ((cb->matchcallback != NULL) &&
                    (cb->matchcallback(URI) != 0)) {
-            buf->context = cb->opencallback(URI);
+            buf->context = cb->opencallback((char *)URI);
             if (buf->context != NULL) {
                 buf->readcallback = cb->readcallback;
                 buf->closecallback = cb->closecallback;

@@ -38,7 +38,7 @@ typedef int (*xmlInputMatchCallback) (const char *filename);
  * @param filename  the filename or URI
  * @returns an Input context or NULL in case or error
  */
-typedef void * (*xmlInputOpenCallback) (const char *filename);
+typedef void * (*xmlInputOpenCallback) (char *filename);
 /**
  * Callback used in the I/O Input API to read the resource
  *
