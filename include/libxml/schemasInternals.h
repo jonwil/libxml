@@ -546,6 +546,8 @@ struct _xmlSchemaType {
     xmlRegexp *contModel; /* Holds the automaton of the content model */
     const xmlChar *targetNamespace;
     void *attrUses;
+    xmlSchemaType** derivedTypes;
+    int derivedTypeCount;
 };
 
 /**

@@ -112,6 +112,9 @@ static const xmlChar *xmlSchemaInstanceNs = (const xmlChar *)
 static const xmlChar *xmlNamespaceNs = (const xmlChar *)
     "http://www.w3.org/2000/xmlns/";
 
+static const xmlChar *xmlNamespaceNs2 = (const xmlChar *)
+    "http://www.w3.org/XML/1998/namespace";
+
 /*
 * Come casting macros.
 */
@@ -14654,6 +14657,14 @@ xmlSchemaResolveTypeReferences(xmlSchemaTypePtr typeDef,
     if (typeDef->baseType == NULL) {
 	typeDef->baseType = xmlSchemaGetType(ctxt->schema,
 	    typeDef->base, typeDef->baseNs);
+        
+        if (typeDef->baseType->type == XML_SCHEMA_TYPE_COMPLEX)
+        {
+            typeDef->baseType->derivedTypes = xmlRealloc(typeDef->baseType->derivedTypes, (typeDef->baseType->derivedTypeCount + 1) * 4);
+            typeDef->baseType->derivedTypes[typeDef->baseType->derivedTypeCount] = typeDef;
+            typeDef->baseType->derivedTypeCount++;
+        }
+
 	if (typeDef->baseType == NULL) {
 	    xmlSchemaPResCompAttrErr(ctxt,
 		XML_SCHEMAP_SRC_RESOLVE,
@@ -23516,6 +23527,8 @@ xmlSchemaValidatorPushAttribute(xmlSchemaValidCtxtPtr vctxt,
 	    }
 	} else if (xmlStrEqual(attr->nsName, xmlNamespaceNs)) {
 	    attr->metaType = XML_SCHEMA_ATTR_INFO_META_XMLNS;
+	} else if (xmlStrEqual(attr->nsName, xmlNamespaceNs2)) {
+	    attr->metaType = XML_SCHEMA_ATTR_INFO_META_XMLNS;
 	}
     }
     attr->value = value;
@@ -25020,18 +25033,25 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		* IDCs will consume the precomputed default value,
 		* so we need to clone it.
 		*/
-		if (iattr->val == NULL) {
-		    VERROR_INT("xmlSchemaVAttributesComplex",
-			"default/fixed value on an attribute use was "
-			"not precomputed");
-		    goto internal_error;
-		}
-		iattr->val = xmlSchemaCopyValue(iattr->val);
-		if (iattr->val == NULL) {
-		    VERROR_INT("xmlSchemaVAttributesComplex",
-			"calling xmlSchemaCopyValue()");
-		    goto internal_error;
-		}
+                if (iattr->value[0] != 0)
+                {
+                    if (iattr->val == NULL) {
+                        VERROR_INT("xmlSchemaVAttributesComplex",
+                            "default/fixed value on an attribute use was "
+                            "not precomputed");
+                        goto internal_error;
+                    }
+                    iattr->val = xmlSchemaCopyValue(iattr->val);
+                    if (iattr->val == NULL) {
+                        VERROR_INT("xmlSchemaVAttributesComplex",
+                            "calling xmlSchemaCopyValue()");
+                        goto internal_error;
+                    }
+                }
+                else
+                {
+                    iattr->val = NULL;
+                }
 	    }
 	    /*
 	    * PSVI: Add the default attribute to the current element.
