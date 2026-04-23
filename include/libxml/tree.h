@@ -612,6 +612,7 @@ struct _xmlAttr {
     void            *psvi;
     /** ID struct if any */
     struct _xmlID   *id XML_DEPRECATED_MEMBER;
+    int             defaultAttribute;
 };
 
 /** Extra data for ID attributes */

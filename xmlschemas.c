@@ -25072,9 +25072,11 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		if (normValue != NULL)
 		    value = BAD_CAST normValue;
 
+                xmlAttrPtr attr = NULL;
+
 		if (iattr->nsName == NULL) {
-		    if (xmlNewProp(defAttrOwnerElem,
-			iattr->localName, value) == NULL) {
+                    attr = xmlNewProp(defAttrOwnerElem, iattr->localName, value);
+		    if (attr == NULL) {
 			VERROR_INT("xmlSchemaVAttributesComplex",
 			    "calling xmlNewProp()");
 			if (normValue != NULL)
@@ -25117,8 +25119,12 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		    * If we have QNames: do we need to ensure there's a
 		    * prefix defined for the QName?
 		    */
-		    xmlNewNsProp(defAttrOwnerElem, ns, iattr->localName, value);
+		    attr = xmlNewNsProp(defAttrOwnerElem, ns, iattr->localName, value);
 		}
+
+                if (attr != NULL)
+                    attr->defaultAttribute = 1;
+
 		if (normValue != NULL)
 		    xmlFree(normValue);
 	    }
