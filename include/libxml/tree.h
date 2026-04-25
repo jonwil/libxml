@@ -582,6 +582,9 @@ struct _xmlDtd {
 /** Attribute of an element */
 typedef struct _xmlAttr xmlAttr;
 typedef xmlAttr *xmlAttrPtr;
+
+typedef struct _xmlSchemaType xmlSchemaType;
+typedef xmlSchemaType* xmlSchemaTypePtr;
 /**
  * An attribute of element.
  */
@@ -613,6 +616,7 @@ struct _xmlAttr {
     /** ID struct if any */
     struct _xmlID   *id XML_DEPRECATED_MEMBER;
     int             defaultAttribute;
+    xmlSchemaTypePtr xmlSchemaType;
 };
 
 /** Extra data for ID attributes */
@@ -662,9 +666,6 @@ struct _xmlRef {
 /** Generic node type in an XML or HTML tree */
 typedef struct _xmlNode xmlNode;
 typedef xmlNode *xmlNodePtr;
-
-typedef struct _xmlSchemaType xmlSchemaType;
-typedef xmlSchemaType* xmlSchemaTypePtr;
 
 /**
  * Generic node type in an XML or HTML tree.

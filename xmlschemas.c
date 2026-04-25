@@ -25123,7 +25123,10 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		}
 
                 if (attr != NULL)
+                {
                     attr->defaultAttribute = 1;
+                    attr->xmlSchemaType = iattr->typeDef;
+                }
 
 		if (normValue != NULL)
 		    xmlFree(normValue);
