@@ -617,6 +617,7 @@ struct _xmlAttr {
     struct _xmlID   *id XML_DEPRECATED_MEMBER;
     int             defaultAttribute;
     xmlSchemaTypePtr xmlSchemaType;
+    struct _xmlNode* xmlSchemaNode;
 };
 
 /** Extra data for ID attributes */
@@ -760,6 +761,7 @@ struct _xmlNode {
     /** Extra data for XPath/XSLT */
     unsigned short   extra;
     xmlSchemaTypePtr xmlSchemaType;
+    struct _xmlNode* xmlSchemaNode;
 };
 
 /**

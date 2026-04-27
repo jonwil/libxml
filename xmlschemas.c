@@ -1,4 +1,5 @@
 /*
+/*
  * schemas.c : implementation of the XML Schema handling and
  *             schema validity checking
  *
@@ -24642,6 +24643,7 @@ xmlSchemaValidateElemDecl(xmlSchemaValidCtxtPtr vctxt)
     if (vctxt->inode->node)
     {
         vctxt->inode->node->xmlSchemaType = actualType;
+        vctxt->inode->node->xmlSchemaNode = vctxt->inode->decl->node;
     }
 
     return (0);
@@ -24982,7 +24984,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
     */
     for (i = 0; i < vctxt->nbAttrInfos; i++) {
 	iattr = vctxt->attrInfos[i];
-	/*
+	/*  
 	* VAL TODO: Note that we won't try to resolve IDCs to
 	* "lax" and "skip" validated attributes. Check what to
 	* do in this case.
@@ -25014,6 +25016,16 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		goto internal_error;
 	    }
 	}
+
+        if (iattr->node && iattr->node->type == XML_ATTRIBUTE_NODE)
+        {
+            ((xmlAttr*)iattr->node)->xmlSchemaType = iattr->typeDef;
+
+            if (iattr->decl)
+            {
+                ((xmlAttr*)iattr->node)->xmlSchemaNode = iattr->decl->node;
+            }
+        }
 
 	if (iattr->state == XML_SCHEMAS_ATTR_DEFAULT) {
 	    /*
@@ -25126,6 +25138,11 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
                 {
                     attr->defaultAttribute = 1;
                     attr->xmlSchemaType = iattr->typeDef;
+
+                    if (iattr->decl)
+                    {
+                        attr->xmlSchemaNode = iattr->decl->node;
+                    }
                 }
 
 		if (normValue != NULL)
